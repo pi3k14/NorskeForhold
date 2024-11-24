@@ -1,2 +1,7 @@
 # NorskeForhold
-Helper classes for special Norwegian entities like Fødselsnummer and Fylke
+En samling av klasser og metoder for å håndtere spesifikke norske entiteter som:
+
+Fødselsnummer
+Organisasjonsnummer
+Fylker
+Kommuner
