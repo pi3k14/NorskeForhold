@@ -19,7 +19,9 @@ namespace Kodefabrikken.NorskeForhold.Enhetstester
         }
 
         [TestClass]
+#pragma warning disable CS0108 // Member hides inherited member; missing new keyword - intentional (method to test has this name)
         public class ToString
+#pragma warning restore CS0108 // Member hides inherited member; missing new keyword
         {
             [TestMethod]
             public void Finnmark_presenteres_fullstendig()

@@ -69,7 +69,9 @@ namespace Kodefabrikken.NorskeForhold
         /// </summary>
         public static readonly Fylke Vestland = new Fylke(46, "Vestland");
 
-        // 50 Trøndelag - Trööndelage
+        /// <summary>
+        /// 50 Trøndelag - Trööndelage
+        /// </summary>
         public static readonly Fylke Trøndelag = new Fylke(50, "Trøndelag",
             new List<KeyValuePair<Språk, string>> { new KeyValuePair<Språk, string>(Språk.Sørsamisk, "Trööndelage") });
 
