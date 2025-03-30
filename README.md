@@ -1,5 +1,5 @@
 # NorskeForhold
-En samling av klasser og metoder for å håndtere spesifikke norske entiteter som:
+En samling av klasser og metoder for å håndtere spesifikke norske entiteter.
 
 ## Fødselsnummer
 
