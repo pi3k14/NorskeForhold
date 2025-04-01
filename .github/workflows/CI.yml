@@ -18,6 +18,7 @@ jobs:
         dotnet-version: |
             9.x
             8.x
+            7.x
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
@@ -27,7 +28,7 @@ jobs:
     - name: Testresults
       continue-on-error: true
       if: always()
-      run:
+      run: |
         dotnet tool update -g dotnet-trx
         trx --output
     - name: ReportGenerator
