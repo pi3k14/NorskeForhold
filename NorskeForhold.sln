@@ -19,6 +19,17 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{EAD00F45-0561-42D1-A1A9-071B9EA16276}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\CI.yml = .github\workflows\CI.yml
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docFx", "docFx", "{77835F8C-9030-4CBD-9F19-C11007DD34C7}"
+	ProjectSection(SolutionItems) = preProject
+		docfx\docfx.json = docfx\docfx.json
+		docfx\index.md = docfx\index.md
+		docfx\toc.yml = docfx\toc.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{EE8F4DD1-0A53-4478-9343-B4150002C1D2}"
+	ProjectSection(SolutionItems) = preProject
+		docfx\docs\getting-started.md = docfx\docs\getting-started.md
+		docfx\docs\toc.yml = docfx\docs\toc.yml
 	EndProjectSection
 EndProject
 Global
@@ -41,6 +52,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{EAD00F45-0561-42D1-A1A9-071B9EA16276} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{EE8F4DD1-0A53-4478-9343-B4150002C1D2} = {77835F8C-9030-4CBD-9F19-C11007DD34C7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1FDA41A6-0CBB-4EBA-99F4-10EDBF2B764B}
