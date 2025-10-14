@@ -1,0 +1,17 @@
+<Project>
+  <PropertyGroup>
+    <Version Condition="'$(Version)' != ''">$(Version)</Version>
+  </PropertyGroup>
+	
+	<PropertyGroup>
+		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+		<GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+	</PropertyGroup>
+	
+  <ItemGroup>
+    <!-- Automagical include this file in all project files -->
+    <Compile Include="..\SolutionInfo.cs" />
+  </ItemGroup>
+
+</Project>

@@ -6,13 +6,12 @@
     <RootNamespace>Kodefabrikken.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <Title>Norske forhold by Syntese</Title>
-    <Authors>Frode Nilsen</Authors>
-    <Company>Syntese</Company>
-    <Copyright>MIT</Copyright>
+    <Title>Norske forhold by Kodefabrikken</Title>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryType>git</RepositoryType>
     <FileVersion>1.0</FileVersion>
+    <Description>Helper classes for Norwegian domestic entity types.</Description>
+    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0' Or '$(TargetFramework)' == 'net9.0'">
