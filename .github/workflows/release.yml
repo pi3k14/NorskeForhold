@@ -1,0 +1,144 @@
+name: "Publish NuGet Package"
+ 
+on:
+  pull_request:
+    types: [ closed ]
+    branches: [ main ] # only deploy from main (no test version)
+# or should this run on release published ???
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+env:
+  DOTNET_NOLOGO: true
+  NuGetDirectory: ${{ github.workspace}}/nuget
+
+jobs:
+  variables:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.set_version.outputs.version }}
+    steps:
+    - name: Set version variable
+      id: set_version
+      run: |
+        echo "version=$(echo ${GITHUB_REF#refs/heads/} | sed -E 's/^(release|hotfix)-//')" >> $GITHUB_OUTPUT
+
+  build:
+    # only if merged from release/ or hotfix/
+    if: github.event.pull_request.merged == true && (contains(toJSON(github.head_ref), 'release-') || contains(toJSON(github.head_ref), 'hotfix-'))
+    needs: variables
+    runs-on: ubuntu-latest
+    # Grant GITHUB_TOKEN the permissions required to create a release
+    permissions:
+      contents: write   # to create release and manage repository content
+      actions: write   # to cancel or manage other workflows if needed
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+ 
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+       dotnet-version: |
+            9.x
+            8.x
+            7.x
+       cache: true
+       cache-dependency-path: "**/packages.lock.json"
+ 
+    - name: Pack the NuGet package
+      run: |
+          dotnet tool install --global GitVersion.Tool
+          Version=$(dotnet-gitversion /output json /showvariable SemVer)
+          dotnet pack --lock-mode --configuration Release --output ${{ env.NuGetDirectory }}
+
+    - name: Upload package as artifact
+      uses: actions/upload-artifact@v3 
+      with:
+        name: nuget
+        if-no-files-found: error
+        path: ${{ env.NuGetDirectory }}/*.nupkg
+
+    - name: Build static files
+      run: |
+            dotnet tool update -g docfx
+            docfx docfx/docfx.json
+
+    - name: Upload static files as artifact
+      uses: actions/upload-pages-artifact@v3 
+      with:
+          path: 'docxf/_site'
+
+    - name: Create release
+      uses: actions/create-release@v1
+      with:
+        tag_name: ${{ needs.variables.outputs.version }}
+        release_name: Release ${{ needs.variables.outputs.version }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish_package:
+    if: github.event.pull_request.merged == true && (contains(toJSON(github.head_ref), 'release-') || contains(toJSON(github.head_ref), 'hotfix-'))
+    needs: build
+    runs-on: ubuntu-latest
+    environment: nuget
+    permissions:
+      id-token: write # enable GitHub OIDC token issuance
+    steps:
+        # Get a short-lived NuGet API key
+      - name: NuGet login (OIDC → temp API key)
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
+        # Download the NuGet package created in the previous job
+      - uses: actions/download-artifact@v3
+        with:
+          name: nuget
+          path: ${{ env.NuGetDirectory }}
+
+        # Install the .NET SDK indicated in the global.json file
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v4
+
+      - name: Publish NuGet package
+        run: dotnet nuget push ${{ env.NuGetDirectory }}/*.nupkg --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+ 
+  publish_doc:
+    if: github.event.pull_request.merged == true && (contains(toJSON(github.head_ref), 'release-') || contains(toJSON(github.head_ref), 'hotfix-'))
+    needs: build
+    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+    # Deploy to the github-pages environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy to GitHub Pages
+      uses: actions/deploy-pages@v4
+
+  sync_develop:
+    if: github.event.pull_request.merged == true && (contains(toJSON(github.head_ref), 'release-') || contains(toJSON(github.head_ref), 'hotfix-'))
+    needs: [ publish_package, variables ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: develop
+          fetch-depth: 0
+      - name: Merge main into develop and create PR
+        run: |
+          BRANCH_NAME="merge/{{variables.outputs.version}}"
+          git checkout -b $BRANCH_NAME
+          git merge origin/main --no-edit
+          git commit --allow-empty -am "Merge main into develop"
+          git push origin $BRANCH_NAME
+          gh pr create --base develop --head $BRANCH_NAME --title "Merge - $BRANCH_NAME" --body "Merging changes from main into develop to keep it up to date."
