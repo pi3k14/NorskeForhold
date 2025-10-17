@@ -25,6 +25,10 @@
 		<RepositoryUrl>https://github.com/pi3k14/NorskeForhold</RepositoryUrl>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+	</PropertyGroup>
+
 	<PropertyGroup Condition="'$(TargetFramework)' == 'net8.0' Or '$(TargetFramework)' == 'net9.0'">
 		<Nullable>enable</Nullable> <!-- NET 6 -->
 		<ImplicitUsings>disable</ImplicitUsings> <!-- NET 6 -->
