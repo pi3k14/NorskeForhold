@@ -2,4 +2,4 @@
 
 [assembly: AssemblyCompany("Kodefabrikken")]
 [assembly: AssemblyProduct("Kodefabrikken.NorskeForhold")]
-[assembly: AssemblyCopyright("GNU LGPL")]
+[assembly: AssemblyCopyright("Copyright © 2025 Frode Nilsen.")]
