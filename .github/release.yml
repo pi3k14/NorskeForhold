@@ -1,0 +1,24 @@
+changelog:
+  exclude:
+    labels:
+      - ignore-changelog
+
+  categories:
+    - title: 🛠 Feilretting
+      labels:
+        - bug
+    - title: 🎉 Ny funksjonalitet
+      labels:
+        - feature
+    - title: 📚 Dokumentasjon 
+      labels:
+        - documentation
+    - title: ☕ Andre endringer
+      labels:
+        - "*"
+      exclude:
+        labels:
+          - dependencies
+    - title: 👒 Avhengigheter
+      labels:
+        - dependencies
