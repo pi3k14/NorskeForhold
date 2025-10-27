@@ -45,7 +45,7 @@ if [[ $RESPONSE =~ ^([yY][eE][sS]|[yY])$ ]]; then
   git push origin "$BRANCH_NAME"
 
   message ">>> Creating draft pull request for merging '$BRANCH_NAME' back to main..."
-  gh pr create --base main --head "$BRANCH_NAME" --title "Hotfix - $RELEASE_VERSION" --template "pull_request-template.md" --draft
+  gh pr create --base main --head "$BRANCH_NAME" --title "Hotfix - $RELEASE_VERSION" --template "pull_request_template.md" --draft
 
   message "!!! Remember to also merge to any release in progress after completed"
 else
