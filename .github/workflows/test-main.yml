@@ -1,0 +1,54 @@
+name: "Verify main"
+
+on:
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: main-test-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  main-test:
+    name: CI main
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: |
+            9.x
+            8.x
+            7.x
+        cache: true
+        cache-dependency-path: "**/packages.lock.json"
+ 
+    - name: Restore dependencies
+      run: dotnet restore --locked-mode
+
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+
+    - name: Test
+      run: dotnet test --configuration Release --no-build -- --report-trx --coverage --coverage-output-format cobertura
+
+    - name: Testresults
+      continue-on-error: true
+      if: always()
+      run: |
+        dotnet tool update -g dotnet-trx
+        trx
+
+    - name: ReportGenerator
+      uses: danielpalme/ReportGenerator-GitHub-Action@5
+      with:
+        reports: '**/*.cobertura.xml'
+        targetdir: '${{ github.workspace }}/coveragereport'
+        reporttypes: 'MarkdownSummaryGithub'
+
+    - name: Upload coverage into summary
+      run: cat $GITHUB_WORKSPACE/coveragereport/SummaryGithub.md >> $GITHUB_STEP_SUMMARY

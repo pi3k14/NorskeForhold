@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.12.35323.107
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11018.127
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorskeForhold", "NorskeForhold\NorskeForhold.csproj", "{711E3364-05CE-4E3B-B46C-323341D0394D}"
 EndProject
@@ -10,15 +10,51 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A674EAD3-7367-41A8-824A-3C98AAF216C0}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
+		icon.png = icon.png
 		LICENSE = LICENSE
+		Makefile = Makefile
 		README.md = README.md
+		SolutionInfo.cs = SolutionInfo.cs
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		.github\pull_request_template.md = .github\pull_request_template.md
+		.github\release.yml = .github\release.yml
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{EAD00F45-0561-42D1-A1A9-071B9EA16276}"
 	ProjectSection(SolutionItems) = preProject
-		.github\workflows\CI.yml = .github\workflows\CI.yml
+		.github\workflows\release.yml = .github\workflows\release.yml
+		.github\workflows\test-develop.yml = .github\workflows\test-develop.yml
+		.github\workflows\test-main.yml = .github\workflows\test-main.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docFx", "docFx", "{77835F8C-9030-4CBD-9F19-C11007DD34C7}"
+	ProjectSection(SolutionItems) = preProject
+		docfx\docfx.json = docfx\docfx.json
+		docfx\index.md = docfx\index.md
+		docfx\toc.yml = docfx\toc.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{CAD7E602-5AB4-478E-B2E1-0338C60B3484}"
+	ProjectSection(SolutionItems) = preProject
+		scripts\create_feature.sh = scripts\create_feature.sh
+		scripts\create_hotfix.sh = scripts\create_hotfix.sh
+		scripts\create_release.sh = scripts\create_release.sh
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ISSUE_TEMPLATE", "ISSUE_TEMPLATE", "{1B800BC2-A8B1-4756-89E3-E952039D4788}"
+	ProjectSection(SolutionItems) = preProject
+		.github\ISSUE_TEMPLATE\bug.yml = .github\ISSUE_TEMPLATE\bug.yml
+		.github\ISSUE_TEMPLATE\feature.yml = .github\ISSUE_TEMPLATE\feature.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{EE8F4DD1-0A53-4478-9343-B4150002C1D2}"
+	ProjectSection(SolutionItems) = preProject
+		docfx\docs\getting-started.md = docfx\docs\getting-started.md
+		docfx\docs\toc.yml = docfx\docs\toc.yml
 	EndProjectSection
 EndProject
 Global
@@ -41,6 +77,8 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{EAD00F45-0561-42D1-A1A9-071B9EA16276} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{1B800BC2-A8B1-4756-89E3-E952039D4788} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{EE8F4DD1-0A53-4478-9343-B4150002C1D2} = {77835F8C-9030-4CBD-9F19-C11007DD34C7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1FDA41A6-0CBB-4EBA-99F4-10EDBF2B764B}

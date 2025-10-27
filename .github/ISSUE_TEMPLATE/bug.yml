@@ -1,0 +1,40 @@
+name: 🐞 Bugrapport
+description: Registrer en feil eller uventet oppførsel
+title: "[Bug]: <tittel> "
+type: 'Bug'
+labels:
+    - bug
+    - needs-triage
+body:
+  - type: textarea
+    attributes:
+      label: Beskrivelse av hendelsen
+      description: Gi en klar og detaljert beskrivelse av hva som skjedde.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Hvordan reprodusere
+      description: | 
+        Oppgi så mye som mulig for å reprodusere feilen, dette kan inkludere:
+        * et eksempelprosjekt (zip-fil) som påviser feilen,
+        * et kodeeksempel,
+        * trinn-for-trinn instruksjoner for å reprodusere feilen.
+    validations:
+        required: true
+  - type: textarea
+    attributes:
+      label: Forventet oppførsel
+      description: Forventet resultat eller oppførsel.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Faktisk oppførsel
+      description: Faktisk resultat eller oppførsel.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Analyse av problemet
+      description: Hvis du har tanker om hvor problemet oppstår, beskriv det her. Inkluder referanser til kode, relevante endringer eller relaterte problemer du kjenner til.
