@@ -31,7 +31,7 @@ git fetch --prune --prune-tags origin
 
 # Get version
 read -r -p "What version (Major.Minor) do you want to create:  " RELEASE_VERSION
-[[ $RELEASE_VERSION =~ ^(?0|[1-9]\d*)\.(0|[1-9]\d*)$ ]] || ( echo "'$RELEASE_VERSION' is invalid"; exit 1; )
+[[ $RELEASE_VERSION =~ ^([1-9]\d*)\.(0|[1-9]\d*)$ ]] || ( echo "'$RELEASE_VERSION' is invalid"; exit 1; )
 
 LATEST_TAG=$(git describe --tags "$(git rev-list --tags --max-count=1)") # gets tags across all branches, not just the current branch
 
