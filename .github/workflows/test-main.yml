@@ -10,7 +10,7 @@ concurrency:
 
 jobs:
   main-test:
-    name: CI
+    name: CI main
     runs-on: ubuntu-latest
 
     steps:

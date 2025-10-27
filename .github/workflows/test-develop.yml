@@ -10,7 +10,7 @@ concurrency:
 
 jobs:
   develop-test:
-    name: CI
+    name: CI develop
     runs-on: ubuntu-latest
 
     steps:
