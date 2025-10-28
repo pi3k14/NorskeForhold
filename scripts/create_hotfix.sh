@@ -31,7 +31,7 @@ git pull origin main
 message ">>> Pulling tags"
 git fetch --prune --tags
 
-RELEASE_VERSION=$(dotnet-gitversion /output json /showvariable MajorMinorPatch)
+RELEASE_VERSION=$(dotnet-gitversion -showvariable MajorMinorPatch)
 
 message ">>> Hotfix: $RELEASE_VERSION"
 
