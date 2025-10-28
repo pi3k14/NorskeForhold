@@ -31,7 +31,7 @@ git fetch --prune --prune-tags origin
 
 # Get version
 read -r -p "What version (Major.Minor) do you want to create:  " RELEASE_VERSION
-[[ $RELEASE_VERSION =~ ^(?0|[1-9]\d*)\.(0|[1-9]\d*)$ ]] || ( echo "'$RELEASE_VERSION' is invalid"; exit 1; )
+[[ $RELEASE_VERSION =~ ^([1-9]\d*)\.(0|[1-9]\d*)$ ]] || ( echo "'$RELEASE_VERSION' is invalid"; exit 1; )
 
 LATEST_TAG=$(git describe --tags "$(git rev-list --tags --max-count=1)") # gets tags across all branches, not just the current branch
 
@@ -45,7 +45,7 @@ if [[ $RESPONSE =~ ^([yY][eE][sS]|[yY])$ ]]; then
   git push origin "$BRANCH_NAME"
 
   message ">>> Creating pull request for merging '$BRANCH_NAME' to main..."
-  gh pr create --base main --head "$BRANCH_NAME" --title "Release - $RELEASE_VERSION" --template "pull_request-template.md"
+  gh pr create --base main --head "$BRANCH_NAME" --title "Release - $RELEASE_VERSION" --template "pull_request_template.md"
 
   message "!!! Remember to also merge to develop after completed"
 else
