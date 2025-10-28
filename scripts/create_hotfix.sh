@@ -2,9 +2,9 @@
 set -e
 
 message() {
-  echo -e "\n----"
+  echo
   echo "$1"
-  echo "..."
+  echo
 }
 
 message ">>> Verify prerequisites"
@@ -14,7 +14,7 @@ message ">>> Verify prerequisites"
 
 [[ ! -x "$(command -v git)" ]] && (echo $'git not found, you need to install git CLI\n'; exit 1;)
 
-[[ ! -x "$(command -v dotnet-gitversion)"]] && (echo $'dotnet-gitversion not found, you need to install gitversion CLI'; exit 1;)
+[[ ! -x "$(command -v dotnet-gitversion) "]] && (echo $'dotnet-gitversion not found, you need to install gitversion CLI'; exit 1;)
 
 gh auth status
 echo # give som space, show status to let user verify
@@ -31,7 +31,7 @@ git pull origin main
 message ">>> Pulling tags"
 git fetch --prune --tags
 
-RELEASE_VERSION=$(dotnet-gitversion /output json /showvariable MajorMinorPatch)
+RELEASE_VERSION=$(dotnet-gitversion -showvariable MajorMinorPatch)
 
 message ">>> Hotfix: $RELEASE_VERSION"
 
@@ -39,16 +39,16 @@ message ">>> Hotfix: $RELEASE_VERSION"
 BRANCH_NAME="hotfix-"$RELEASE_VERSION
 
 read -r -p "Are you sure you want to create the branch '$BRANCH_NAME' [Y/n]:  " RESPONSE
-if [[ $RESPONSE =~ ^([yY][eE][sS]|[yY])$ ]]; then
+if [[ $RESPONSE =~ ^([yY][eE][sS]|[yY]|)$ ]]; then
   message ">>> Creating branch '$BRANCH_NAME' from main..."
   git checkout -b "$BRANCH_NAME" main
   git push origin "$BRANCH_NAME"
 
   message ">>> Creating draft pull request for merging '$BRANCH_NAME' back to main..."
-  gh pr create --base main --head "$BRANCH_NAME" --title "Hotfix - $RELEASE_VERSION" --template "pull_request_template.md" --draft
+  gh pr create --base main --head "$BRANCH_NAME" --title "Hotfix $RELEASE_VERSION" --template "pull_request_template.md" --draft
 
   message "!!! Remember to also merge to any release in progress after completed"
 else
-  message "!!Action cancelled, exiting"
+  message "Action cancelled, exiting"
   exit 1
 fi
