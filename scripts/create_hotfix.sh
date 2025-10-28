@@ -14,7 +14,7 @@ message ">>> Verify prerequisites"
 
 [[ ! -x "$(command -v git)" ]] && (echo $'git not found, you need to install git CLI\n'; exit 1;)
 
-[[ ! -x "$(command -v dotnet-gitversion) "]] && (echo $'dotnet-gitversion not found, you need to install gitversion CLI'; exit 1;)
+[[ ! -x "$(command -v dotnet-gitversion)" ]] && (echo $'dotnet-gitversion not found, you need to install gitversion CLI'; exit 1;)
 
 gh auth status
 echo # give som space, show status to let user verify
