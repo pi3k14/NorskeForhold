@@ -53,7 +53,7 @@ jobs:
     - name: Pack the NuGet package
       run: |
           dotnet tool install --global GitVersion.Tool
-          Version=$(dotnet-gitversion /output json /showvariable SemVer)
+          Version=$(dotnet-gitversion -showvariable SemVer)
           dotnet pack --lock-mode --configuration Release --output ${{ env.NuGetDirectory }}
 
     - name: Upload package as artifact
