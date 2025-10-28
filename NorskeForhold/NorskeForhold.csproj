@@ -11,7 +11,6 @@
 		<FileVersion>1.0</FileVersion>
 
 		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-		<EnablePackageValidation>true</EnablePackageValidation>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 
 		<IsPackable>true</IsPackable>
