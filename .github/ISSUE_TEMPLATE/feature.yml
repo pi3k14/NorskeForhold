@@ -1,0 +1,29 @@
+name: 💡 Forslag til ny funksjon
+description: Foreslå en ny funksjon eller forbedring
+title: "[Feature]: <tittel> "
+type: 'Feature'
+labels:
+    - feature
+body:
+  - type: textarea
+    attributes:
+      label: Oppsummering
+      description: Kort sammendrag av forslaget.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Bakgrunn og årsak
+      description: Hvilken utfordring løses, og i hvilken kontekst?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Foreslått funksjonalitet
+      description: Vennligst beskriv endringen du foreslår i mest mulig detalj.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Løsningsforslag
+      description:  Hvis du har tanker rundt hvordan dette bør løses, beskriv det her. Inkluder referanser til kode, relevante endringer eller relaterte Github Issues du kjenner til.

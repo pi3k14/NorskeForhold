@@ -1,51 +1,69 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  
-  <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net8.0;net9.0</TargetFrameworks>
-    <AssemblyName>Kodefabrikken.$(MSBuildProjectName)</AssemblyName>
-    <RootNamespace>Kodefabrikken.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <Title>Norske forhold by Syntese</Title>
-    <Authors>Frode Nilsen</Authors>
-    <Company>Syntese</Company>
-    <Copyright>MIT</Copyright>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <RepositoryType>git</RepositoryType>
-    <FileVersion>1.0</FileVersion>
-  </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0' Or '$(TargetFramework)' == 'net9.0'">
-    <Nullable>enable</Nullable> <!-- NET 6 -->
-    <ImplicitUsings>disable</ImplicitUsings> <!-- NET 6 -->
-  </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(TargetFramework)'=='net8.0'">
-    <WarningLevel>7</WarningLevel>
-    <NoWarn />
-  </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(TargetFramework)'=='net9.0'">
-    <WarningLevel>8</WarningLevel>
-    <NoWarn />
-  </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
-    <WarningLevel>4</WarningLevel>
-    <NoWarn />
-  </PropertyGroup>
-  
-  <ItemGroup>
-    <None Include="..\README.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
-  
-  <ItemGroup>
-    <PackageReference Include="Kodefabrikken.GetBuildNumber" Version="1.0.0">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-  </ItemGroup>
+
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;net8.0;net9.0</TargetFrameworks>
+		<AssemblyName>Kodefabrikken.$(MSBuildProjectName)</AssemblyName>
+		<RootNamespace>Kodefabrikken.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+
+		<Title>Norske forhold av Kodefabrikken</Title>
+		<Authors>Frode Nilsen</Authors>
+		<Description>Hjelpeklasser for norske entitetstyper.</Description>
+		<FileVersion>1.0</FileVersion>
+
+		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+		<EnablePackageValidation>true</EnablePackageValidation>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+
+		<IsPackable>true</IsPackable>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageIcon>icon.png</PackageIcon>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+		<PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
+		<PackageReleaseNotes>Første versjon</PackageReleaseNotes>
+		<PackageTags>Kommune;Fylke;Organisasjonsnummer</PackageTags>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/pi3k14/NorskeForhold</RepositoryUrl>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(TargetFramework)' == 'net8.0' Or '$(TargetFramework)' == 'net9.0'">
+		<Nullable>enable</Nullable> <!-- NET 6 -->
+		<ImplicitUsings>disable</ImplicitUsings> <!-- NET 6 -->
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(TargetFramework)'=='net8.0'">
+		<WarningLevel>7</WarningLevel>
+		<NoWarn />
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(TargetFramework)'=='net9.0'">
+		<WarningLevel>8</WarningLevel>
+		<NoWarn />
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+		<WarningLevel>4</WarningLevel>
+		<NoWarn />
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<None Include="..\icon.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Kodefabrikken.GetBuildNumber" Version="1.0.0">
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+	</ItemGroup>
 
 </Project>
