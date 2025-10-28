@@ -39,6 +39,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+      with:
+       fetch-depth: 0 # needed for GitVersion
  
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
@@ -49,15 +51,22 @@ jobs:
             7.x
        cache: true
        cache-dependency-path: "**/packages.lock.json"
- 
-    - name: Pack the NuGet package
+
+       # This shouldn't be necessary, but it appears that dotnet pack doesn't support --locked-mode
+    - name: Restore dependencies
+      run: dotnet restore --locked-mode
+
+    - name: Build
       run: |
           dotnet tool install --global GitVersion.Tool
-          Version=$(dotnet-gitversion /output json /showvariable SemVer)
-          dotnet pack --lock-mode --configuration Release --output ${{ env.NuGetDirectory }}
+          Version=$(dotnet-gitversion -showvariable SemVer)
+          dotnet build --configuration Release --no-restore
+ 
+    - name: Pack the NuGet package
+      run: dotnet pack --no-build --output ${{ env.NuGetDirectory }}
 
     - name: Upload package as artifact
-      uses: actions/upload-artifact@v3 
+      uses: actions/upload-artifact@v4 
       with:
         name: nuget
         if-no-files-found: error
@@ -97,7 +106,7 @@ jobs:
           user: ${{ secrets.NUGET_USER }}
 
         # Download the NuGet package created in the previous job
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: nuget
           path: ${{ env.NuGetDirectory }}

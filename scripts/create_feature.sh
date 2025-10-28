@@ -2,9 +2,9 @@
 set -e
 
 message() {
-  echo -e "\n-----"
+  echo
   echo "$1"
-  echo "..."
+  echo
 }
 
 message ">>> Verify prerequisites"
@@ -31,7 +31,7 @@ read -r -p "What feature do you want to create: " FEATURE
 
 # Create feature branch and PR
 read -r -p "Do you want to create '$FEATURE' (branched from develop) [Y/n]: " RESPONSE
-if [[ $RESPONSE =~ ^([yY][eE][sS]|[yY])$ ]]; then
+if [[ $RESPONSE =~ ^([yY][eE][sS]|[yY]|)$ ]]; then
   BRANCH_NAME="feature/$FEATURE"
 
   message ">>> Creating branch '$BRANCH_NAME' from develop..."
@@ -41,6 +41,6 @@ if [[ $RESPONSE =~ ^([yY][eE][sS]|[yY])$ ]]; then
   message ">>> Creating draft pull request for merging '$BRANCH_NAME' back to develop..."
   gh pr create --base develop --head "$BRANCH_NAME" --title "Feature - $FEATURE" --template "pull_request_template.md" --draft
 else
-  message "!!! Action cancelled, exiting"
+  message "Action cancelled, exiting"
   exit 1
 fi
