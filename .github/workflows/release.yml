@@ -39,6 +39,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+      with:
+       fetch-depth: 0 # needed for GitVersion
  
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
@@ -53,9 +55,7 @@ jobs:
     - name: Pack the NuGet package
       run: |
           dotnet tool install --global GitVersion.Tool
-          dotnet-gitversion -showvariable SemVer
           Version=$(dotnet-gitversion -showvariable SemVer)
-          echo "Version is $Version"
           dotnet pack --lock-mode --configuration Release --output ${{ env.NuGetDirectory }}
 
     - name: Upload package as artifact
