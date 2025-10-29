@@ -80,7 +80,7 @@ jobs:
     - name: Upload static files as artifact
       uses: actions/upload-pages-artifact@v3 
       with:
-          path: 'docxf/_site'
+          path: 'docfx/_site'
 
     - name: Create release
       uses: actions/create-release@v1
