@@ -42,12 +42,11 @@ if [[ $RESPONSE =~ ^([yY][eE][sS]|[yY]|)$ ]]; then
 
   message ">>> Creating branch '$BRANCH_NAME' from develop..."
   git checkout -b "$BRANCH_NAME" develop
+  git commit --allow-empty -am "Release '$RELEASE_VERSION'"
   git push origin "$BRANCH_NAME"
 
   message ">>> Creating pull request for merging '$BRANCH_NAME' to main..."
   gh pr create --base main --head "$BRANCH_NAME" --title "Release $RELEASE_VERSION" --template "pull_request_template.md"
-
-  message "!!! Remember to also merge to develop after completed if there are commits in the release branch"
 else
   message "Action cancelled, exiting"
   exit 1
