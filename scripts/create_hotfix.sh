@@ -42,12 +42,11 @@ read -r -p "Are you sure you want to create the branch '$BRANCH_NAME' [Y/n]:  " 
 if [[ $RESPONSE =~ ^([yY][eE][sS]|[yY]|)$ ]]; then
   message ">>> Creating branch '$BRANCH_NAME' from main..."
   git checkout -b "$BRANCH_NAME" main
+  git commit --allow-empty -am "Hotfix '$RELEASE_VERSION'"
   git push origin "$BRANCH_NAME"
 
   message ">>> Creating draft pull request for merging '$BRANCH_NAME' back to main..."
   gh pr create --base main --head "$BRANCH_NAME" --title "Hotfix $RELEASE_VERSION" --template "pull_request_template.md" --draft
-
-  message "!!! Remember to also merge to any release in progress after completed"
 else
   message "Action cancelled, exiting"
   exit 1

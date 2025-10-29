@@ -36,6 +36,7 @@ if [[ $RESPONSE =~ ^([yY][eE][sS]|[yY]|)$ ]]; then
 
   message ">>> Creating branch '$BRANCH_NAME' from develop..."
   git checkout -b "$BRANCH_NAME" develop
+  git commit --allow-empty -am "New feature '$FEATURE'"
   git push origin "$BRANCH_NAME"
 
   message ">>> Creating draft pull request for merging '$BRANCH_NAME' back to develop..."
