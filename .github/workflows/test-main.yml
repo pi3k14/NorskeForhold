@@ -16,7 +16,7 @@ jobs:
     steps:
     - name: Check source branch
       run: |
-        if ! [[ ${{ github.head_ref }} =~ ^hotfix- ]] && ! [[ ${{ github.head_ref }} =~ ^release- ]; then
+        if ! [[ ${{ github.head_ref }} =~ ^hotfix- ]] && ! [[ ${{ github.head_ref }} =~ ^release- ]]; then
           echo "Pull requests only allowed from hotfix and release branches"
           exit 1
         fi
