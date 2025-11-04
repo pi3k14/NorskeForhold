@@ -1,10 +1,9 @@
-name: "Publish NuGet Package"
+name: "Publish NuGet Package and Documentation"
  
 on:
-  pull_request:
-    types: [ closed ]
-    branches: [ main ] # only deploy from main (no test version)
-# or should this run on release published ???
+  push:
+    branches: 
+      - main
 
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
@@ -14,22 +13,21 @@ concurrency:
 
 env:
   DOTNET_NOLOGO: true
-  NuGetDirectory: ${{ github.workspace}}/nuget
+  NuGetDirectory: ${{ github.workspace }}/nuget
 
 jobs:
   variables:
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.set_version.outputs.version }}
+      full_semver: ${{ steps.set_version.outputs.GitVersion_FullSemVer }}
+      semver: ${{ steps.set_version.outputs.GitVersion_SemVer }}
     steps:
-    - name: Set version variable
+    - name: Get GitVersion variables
       id: set_version
       run: |
-        echo "version=$(echo ${GITHUB_REF#refs/heads/} | sed -E 's/^(release|hotfix)-//')" >> $GITHUB_OUTPUT
+        echo "$(dotnet-gitversion -output dotenv)" >> $GITHUB_OUTPUT
 
   build:
-    # only if merged from release/ or hotfix/
-    if: github.event.pull_request.merged == true && (contains(toJSON(github.head_ref), 'release-') || contains(toJSON(github.head_ref), 'hotfix-'))
     needs: variables
     runs-on: ubuntu-latest
     # Grant GITHUB_TOKEN the permissions required to create a release
@@ -48,7 +46,6 @@ jobs:
        dotnet-version: |
             9.x
             8.x
-            7.x
        cache: true
        cache-dependency-path: "**/packages.lock.json"
 
@@ -59,8 +56,10 @@ jobs:
     - name: Build
       run: |
           dotnet tool install --global GitVersion.Tool
-          Version=$(dotnet-gitversion -showvariable SemVer)
-          dotnet build --configuration Release --no-restore
+          PackageVersion=${{ needs.variables.outputs.semver }}
+          InformationalVersion=${{ needs.variables.outputs.full_semver }}
+          echo "Setting package $PackageVersion and informational version $InformationalVersion"
+          dotnet build NorskeForhold --configuration Release --no-restore
  
     - name: Pack the NuGet package
       run: dotnet pack --no-build --output ${{ env.NuGetDirectory }}
@@ -85,13 +84,13 @@ jobs:
     - name: Create release
       uses: actions/create-release@v1
       with:
-        tag_name: ${{ needs.variables.outputs.version }}
-        release_name: Release ${{ needs.variables.outputs.version }}
+        tag_name: ${{ needs.variables.outputs.GitVersion_MajorMinorPatch }}
+        release_name: Release ${{ needs.variables.outputs.GitVersion_MajorMinorPatch }}
+        draft: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   publish_package:
-    if: github.event.pull_request.merged == true && (contains(toJSON(github.head_ref), 'release-') || contains(toJSON(github.head_ref), 'hotfix-'))
     needs: build
     runs-on: ubuntu-latest
     environment: nuget
@@ -111,7 +110,7 @@ jobs:
           name: nuget
           path: ${{ env.NuGetDirectory }}
 
-        # Install the .NET SDK indicated in the global.json file
+        # Install .NET SDK
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v4
 
@@ -119,7 +118,6 @@ jobs:
         run: dotnet nuget push ${{ env.NuGetDirectory }}/*.nupkg --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
  
   publish_doc:
-    if: github.event.pull_request.merged == true && (contains(toJSON(github.head_ref), 'release-') || contains(toJSON(github.head_ref), 'hotfix-'))
     needs: build
     # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
     permissions:
@@ -133,21 +131,3 @@ jobs:
     steps:
     - name: Deploy to GitHub Pages
       uses: actions/deploy-pages@v4
-
-  sync_develop:
-    if: github.event.pull_request.merged == true && (contains(toJSON(github.head_ref), 'release-') || contains(toJSON(github.head_ref), 'hotfix-'))
-    needs: [ publish_package, variables ]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: develop
-          fetch-depth: 0
-      - name: Merge main into develop and create PR
-        run: |
-          BRANCH_NAME="merge/{{variables.outputs.version}}"
-          git checkout -b $BRANCH_NAME
-          git merge origin/main --no-edit
-          git commit --allow-empty -am "Merge main into develop"
-          git push origin $BRANCH_NAME
-          gh pr create --base develop --head $BRANCH_NAME --title "Merge - $BRANCH_NAME" --body "Merging changes from main into develop to keep it up to date."

@@ -38,6 +38,7 @@ LATEST_TAG=$(git describe --tags "$(git rev-list --tags --max-count=1)") # gets 
 # Create release branch and PR
 read -r -p "Last released version was '$LATEST_TAG', do you want to create '$RELEASE_VERSION' [Y/n]:  " RESPONSE
 if [[ $RESPONSE =~ ^([yY][eE][sS]|[yY]|)$ ]]; then
+  RELEASE_VERSION="$RELEASE_VERSION.0"
   BRANCH_NAME="release-$RELEASE_VERSION"
 
   message ">>> Creating branch '$BRANCH_NAME' from develop..."
@@ -46,7 +47,7 @@ if [[ $RESPONSE =~ ^([yY][eE][sS]|[yY]|)$ ]]; then
   git push origin "$BRANCH_NAME"
 
   message ">>> Creating pull request for merging '$BRANCH_NAME' to main..."
-  gh pr create --base main --head "$BRANCH_NAME" --title "Release $RELEASE_VERSION" --template "pull_request_template.md"
+  gh pr create --base main --head "$BRANCH_NAME" --title "Release $RELEASE_VERSION" --body-file ".github/pull_request_template.md"
 else
   message "Action cancelled, exiting"
   exit 1
