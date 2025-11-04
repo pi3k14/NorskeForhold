@@ -25,6 +25,7 @@ jobs:
     - name: Get GitVersion variables
       id: set_version
       run: |
+        dotnet tool install --global GitVersion.Tool
         echo "$(dotnet-gitversion -output dotenv)" >> $GITHUB_OUTPUT
 
   build:
@@ -55,7 +56,6 @@ jobs:
 
     - name: Build
       run: |
-          dotnet tool install --global GitVersion.Tool
           PackageVersion=${{ needs.variables.outputs.semver }}
           InformationalVersion=${{ needs.variables.outputs.full_semver }}
           echo "Setting package $PackageVersion and informational version $InformationalVersion"
