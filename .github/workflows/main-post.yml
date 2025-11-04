@@ -1,0 +1,44 @@
+name: "Publish NuGet Package"
+ 
+on:
+  pull_request:
+    types: [ closed ]
+    branches: [ main ] 
+
+env:
+  DOTNET_NOLOGO: true
+
+jobs:
+
+  variables:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.set_version.outputs.version }}
+    steps:
+    - name: Get version of merged branch
+      id: set_version
+      run: |
+        echo "Ref: ${{ github.ref }}"
+        echo "Head ref: ${{ github.head_ref }}"
+        echo "Event head ref: ${{ github.event.pull_request.head.ref }}"
+        echo "version=$(echo ${{ github.head_ref }} | sed -E 's/^(release|hotfix)-//')" >> $GITHUB_OUTPUT
+
+  sync_develop:
+    if: github.event.pull_request.merged == true && (contains(toJSON(github.head_ref), 'release-') || contains(toJSON(github.head_ref), 'hotfix-'))
+    needs: [ variables ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: develop
+          fetch-depth: 0
+      - name: Merge main into develop and create PR
+        run: |
+          BRANCH_NAME="merge/{{variables.outputs.version}}"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions"
+          git checkout -b $BRANCH_NAME
+          git merge origin/main --no-edit
+          git commit --allow-empty -am "Merge main into develop"
+          git push origin $BRANCH_NAME
+          gh pr create --base develop --head $BRANCH_NAME --title "Merge - $BRANCH_NAME" --body "Merging latest changes from main into develop to keep it current."
