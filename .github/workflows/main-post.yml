@@ -35,7 +35,7 @@ jobs:
           fetch-depth: 0
       - name: Merge main into develop and create PR
         run: |
-          BRANCH_NAME="merge/{{variables.outputs.version}}"
+          BRANCH_NAME="merge/${{variables.outputs.version}}"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions"
           git checkout -b $BRANCH_NAME
@@ -43,3 +43,5 @@ jobs:
           git commit --allow-empty -am "Merge main into develop"
           git push origin $BRANCH_NAME
           gh pr create --base develop --head $BRANCH_NAME --title "Merge - $BRANCH_NAME" --body "Merging latest changes from main into develop to keep it current."
+        env:
+          GH_TOKEN: ${{ github.token }}

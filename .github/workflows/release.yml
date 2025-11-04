@@ -16,31 +16,28 @@ env:
   NuGetDirectory: ${{ github.workspace }}/nuget
 
 jobs:
-  variables:
-    runs-on: ubuntu-latest
-    outputs:
-      full_semver: ${{ steps.set_version.outputs.GitVersion_FullSemVer }}
-      semver: ${{ steps.set_version.outputs.GitVersion_SemVer }}
-    steps:
-    - name: Get GitVersion variables
-      id: set_version
-      run: |
-        dotnet tool install --global GitVersion.Tool
-        echo "$(dotnet-gitversion -output dotenv)" >> $GITHUB_OUTPUT
-
   build:
-    needs: variables
     runs-on: ubuntu-latest
     # Grant GITHUB_TOKEN the permissions required to create a release
     permissions:
       contents: write   # to create release and manage repository content
       actions: write   # to cancel or manage other workflows if needed
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
       with:
        fetch-depth: 0 # needed for GitVersion
  
+    - name: Get GitVersion variables
+      id: variables
+      run: |
+        dotnet tool install --global GitVersion.Tool
+        echo "$(dotnet-gitversion -output dotenv)" >> $GITHUB_OUTPUT
+
+    - name: Checkout code
+      uses: actions/checkout@v4
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
@@ -56,8 +53,8 @@ jobs:
 
     - name: Build
       run: |
-          PackageVersion=${{ needs.variables.outputs.semver }}
-          InformationalVersion=${{ needs.variables.outputs.full_semver }}
+          PackageVersion=${{ steps.variables.outputs.GitVersion_SemVer }}
+          InformationalVersion=${{ steps.variables.outputs.GitVersion_FullSemVer }}
           echo "Setting package $PackageVersion and informational version $InformationalVersion"
           dotnet build NorskeForhold --configuration Release --no-restore
  
