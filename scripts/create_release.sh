@@ -46,7 +46,7 @@ if [[ $RESPONSE =~ ^([yY][eE][sS]|[yY]|)$ ]]; then
   git push origin "$BRANCH_NAME"
 
   message ">>> Creating pull request for merging '$BRANCH_NAME' to main..."
-  gh pr create --base main --head "$BRANCH_NAME" --title "Release $RELEASE_VERSION" --template "pull_request_template.md"
+  gh pr create --base main --head "$BRANCH_NAME" --title "Release $RELEASE_VERSION" --body-file ".github/pull_request_template.md"
 else
   message "Action cancelled, exiting"
   exit 1
