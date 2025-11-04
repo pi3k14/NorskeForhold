@@ -14,6 +14,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Check source branch
+      run: |
+        if ! [[ ${{ github.head_ref }} =~ ^hotfix- ]] && ! [[ ${{ github.head_ref }} =~ ^release- ]]; then
+          echo "Pull requests only allowed from hotfix and release branches"
+          exit 1
+        fi
+
     - name: Checkout
       uses: actions/checkout@v4
 

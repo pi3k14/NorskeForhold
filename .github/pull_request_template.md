@@ -1,15 +1,15 @@
-<!-- Skriv en oppsummering i Title ovenfor og slett instruksene nedenfor når de er gjennomført. -->
+<!-- Skriv en oppsummering i Title ovenfor og slett instruksene nedenfor nÃ¥r de er gjennomfÃ¸rt. -->
 
-**VIKTIG: Ikke lag en Pull Request uten en tilhørende Issue.**
+**VIKTIG: Ikke lag en Pull Request uten en tilhÃ¸rende Issue.**
 
-*Enhver endringer må diskuteres før du går videre. Unnlatelse av dette kan føre til avvisning av pull requesten.*
+*Enhver endringer mÃ¥ diskuteres fÃ¸r du gÃ¥r videre. Unnlatelse av dette kan fÃ¸re til avvisning av pull requesten.*
 
-Vennligst oppgi nok informasjon slik at andre kan gjennomgå pull requesten.
+Vennligst oppgi nok informasjon slik at andre kan gjennomgÃ¥ pull requesten.
 
-Inkluder `closes #XXXX` i beskrivelsen slik at Issue lukkes automatisk når PR fullføres.
+Inkluder `closes #XXXX` i beskrivelsen slik at Issue lukkes automatisk nÃ¥r PR fullfÃ¸res.
 
-## Årsak og kontekst
-<!-- Hvorfor er denne endringen påkrevd, hva løser den? -->
+## Ã…rsak og kontekst
+<!-- Hvorfor er denne endringen pÃ¥krevd, hva lÃ¸ser den? -->
 <!-- Link til Issue her. -->
 
 ## Hvordan er dette testet?
@@ -17,14 +17,14 @@ Inkluder `closes #XXXX` i beskrivelsen slik at Issue lukkes automatisk når PR fu
 
 ## Type endringer
 <!-- Kryss av for alle aktuelle. -->
-- [ ] Bug fix (non-breaking endring som løser en Issue)
+- [ ] Bug fix (non-breaking endring som lÃ¸ser en Issue)
 - [ ] Ny funksjonalitet (non-breaking endring som legger til ny funksjonalitet)
-- [ ] Breaking endring (endring som fører til at eksisterende funksjonalitet endres)
+- [ ] Breaking endring (endring som fÃ¸rer til at eksisterende funksjonalitet endres)
 
 ## Sjekkliste:
 <!-- Kryss av for alle aktuelle. -->
-- [ ] Koden følger prosjektets kodestil.
+- [ ] Koden fÃ¸lger prosjektets kodestil.
 - [ ] Endringen krever en endring av dokumentasjonen.
   - [ ] Dokumentasjonen er oppdatert tilsvarende.
 - [ ] Tester er lagt til/endret tilsvarende kodeendringene.
-- [ ] Alle tester gjennomført og bestått.
+- [ ] Alle tester gjennomfÃ¸rt og bestÃ¥tt.
