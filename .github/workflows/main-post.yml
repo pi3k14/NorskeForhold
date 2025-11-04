@@ -1,4 +1,4 @@
-name: "Publish NuGet Package"
+name: "Update develop"
  
 on:
   pull_request:
@@ -18,15 +18,16 @@ jobs:
     - name: Get version of merged branch
       id: set_version
       run: |
-        echo "Ref: ${{ github.ref }}"
         echo "Head ref: ${{ github.head_ref }}"
-        echo "Event head ref: ${{ github.event.pull_request.head.ref }}"
         echo "version=$(echo ${{ github.head_ref }} | sed -E 's/^(release|hotfix)-//')" >> $GITHUB_OUTPUT
 
   sync_develop:
     if: github.event.pull_request.merged == true && (contains(toJSON(github.head_ref), 'release-') || contains(toJSON(github.head_ref), 'hotfix-'))
     needs: [ variables ]
     runs-on: ubuntu-latest
+    # Grant GITHUB_TOKEN the permissions required to merge and push
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
         with:
