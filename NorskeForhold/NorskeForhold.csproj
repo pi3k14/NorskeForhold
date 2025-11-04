@@ -8,7 +8,8 @@
 		<Title>Norske forhold av Kodefabrikken</Title>
 		<Authors>Frode Nilsen</Authors>
 		<Description>Hjelpeklasser for norske entitetstyper.</Description>
-		<FileVersion>1.0</FileVersion>
+		<FileVersion>1.0.0</FileVersion>
+		<AssemblyVersion>1.0</AssemblyVersion>
 
 		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>

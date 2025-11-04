@@ -38,6 +38,7 @@ LATEST_TAG=$(git describe --tags "$(git rev-list --tags --max-count=1)") # gets 
 # Create release branch and PR
 read -r -p "Last released version was '$LATEST_TAG', do you want to create '$RELEASE_VERSION' [Y/n]:  " RESPONSE
 if [[ $RESPONSE =~ ^([yY][eE][sS]|[yY]|)$ ]]; then
+  RELEASE_VERSION="$RELEASE_VERSION.0"
   BRANCH_NAME="release-$RELEASE_VERSION"
 
   message ">>> Creating branch '$BRANCH_NAME' from develop..."
