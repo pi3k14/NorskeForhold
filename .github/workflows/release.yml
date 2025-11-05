@@ -35,7 +35,7 @@ jobs:
       id: variables
       run: |
         dotnet tool install --global GitVersion.Tool
-        echo "version=$(dotnet-gitversion -showvariable)" >> $GITHUB_OUTPUT
+        echo "version=$(dotnet-gitversion -showvariable MajorMinorPatch)" >> $GITHUB_OUTPUT
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
