@@ -28,6 +28,7 @@ echo # give som space, show status to let user verify
 message ">>> Pulling main"
 git pull origin main
 
+# This can be optimized to call dotnet-gitversion only once
 MAJOR=$(dotnet-gitversion -showvariable Major)
 MINOR=$(dotnet-gitversion -showvariable Minor)
 PATCH=$(dotnet-gitversion -showvariable Patch)
