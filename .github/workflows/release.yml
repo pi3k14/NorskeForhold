@@ -35,7 +35,8 @@ jobs:
       id: variables
       run: |
         dotnet tool install --global GitVersion.Tool
-        Version=$(dotnet-gitversion -verbosity Verbose -showvariable MajorMinorPatch)
+        Version=$(dotnet-gitversion -verbosity Verbose -showvariable MajorMinorPatch -l gv.log)
+        cat gv.log
         echo "version=$Version" >> $GITHUB_OUTPUT
 
     - name: Setup .NET
@@ -55,7 +56,7 @@ jobs:
       run: |
           Version=${{ steps.variables.outputs.version }}
           echo "Setting $Version for package build"
-          export Version=$Version
+          echo "Version=$Version" >> $GITHUB_ENV
           dotnet build NorskeForhold --configuration Release --no-restore
  
     - name: Pack the NuGet package
