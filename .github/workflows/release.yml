@@ -15,13 +15,15 @@ env:
   DOTNET_NOLOGO: true
   NuGetDirectory: ${{ github.workspace }}/nuget
 
+permissions:
+      actions: write   # to cancel or manage other workflows if needed
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    # Grant GITHUB_TOKEN the permissions required to create a release
+
     permissions:
-      contents: write   # to create release and manage repository content
-      actions: write   # to cancel or manage other workflows if needed
+      contents: write #  to create a release
 
     steps:
     - name: Checkout code
@@ -33,10 +35,7 @@ jobs:
       id: variables
       run: |
         dotnet tool install --global GitVersion.Tool
-        echo "$(dotnet-gitversion -output dotenv)" >> $GITHUB_OUTPUT
-
-    - name: Checkout code
-      uses: actions/checkout@v4
+        echo "version=$(dotnet-gitversion -showvariable)" >> $GITHUB_OUTPUT
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
@@ -53,9 +52,8 @@ jobs:
 
     - name: Build
       run: |
-          PackageVersion=${{ steps.variables.outputs.GitVersion_SemVer }}
-          InformationalVersion=${{ steps.variables.outputs.GitVersion_FullSemVer }}
-          echo "Setting package $PackageVersion and informational version $InformationalVersion"
+          Version=${{ steps.variables.outputs.version }}
+          echo "Setting $Version for package build"
           dotnet build NorskeForhold --configuration Release --no-restore
  
     - name: Pack the NuGet package
@@ -81,8 +79,8 @@ jobs:
     - name: Create release
       uses: actions/create-release@v1
       with:
-        tag_name: ${{ needs.variables.outputs.GitVersion_MajorMinorPatch }}
-        release_name: Release ${{ needs.variables.outputs.GitVersion_MajorMinorPatch }}
+        tag_name: ${{ steps.variables.outputs.version }}
+        release_name: Release ${{ steps.variables.outputs.version }}
         draft: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
