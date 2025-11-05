@@ -25,9 +25,8 @@ jobs:
     if: github.event.pull_request.merged == true && (contains(toJSON(github.head_ref), 'release-') || contains(toJSON(github.head_ref), 'hotfix-'))
     needs: [ variables ]
     runs-on: ubuntu-latest
-    # Grant GITHUB_TOKEN the permissions required to merge and push
     permissions:
-      contents: write
+      contents: write # to push to repository
     steps:
       - uses: actions/checkout@v4
         with:
@@ -35,7 +34,7 @@ jobs:
           fetch-depth: 0
       - name: Merge main into develop and create PR
         run: |
-          BRANCH_NAME="merge/${{variables.outputs.version}}"
+          BRANCH_NAME="merge/${{needs.variables.outputs.version}}"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions"
           git checkout -b $BRANCH_NAME

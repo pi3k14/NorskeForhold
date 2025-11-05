@@ -28,10 +28,10 @@ echo # give som space, show status to let user verify
 message ">>> Pulling main"
 git pull origin main
 
-message ">>> Pulling tags"
-git fetch --prune --tags
-
-RELEASE_VERSION=$(dotnet-gitversion -showvariable MajorMinorPatch)
+MAJOR=$(dotnet-gitversion -showvariable Major)
+MINOR=$(dotnet-gitversion -showvariable Minor)
+PATCH=$(dotnet-gitversion -showvariable Patch)
+RELEASE_VERSION="$MAJOR.$MINOR.$((++PATCH))"
 
 message ">>> Hotfix: $RELEASE_VERSION"
 
