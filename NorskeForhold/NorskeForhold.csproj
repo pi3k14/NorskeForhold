@@ -11,6 +11,7 @@
 		<FileVersion>1.0.0</FileVersion>
 		<AssemblyVersion>1.0</AssemblyVersion>
 
+		<IncludeSourceRevisionInInformationalVersion>False</IncludeSourceRevisionInInformationalVersion>
 		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 
